@@ -1,0 +1,57 @@
+import { Component } from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {CursoService} from "../../../../services/curso.service";
+import {Curso} from "../../../../interfaces/global.interfaces";
+import {AlertDialogComponent} from "../../alert-dialog/alert-dialog.component";
+
+@Component({
+  selector: 'app-editar',
+  standalone: true,
+  imports: [
+    ReactiveFormsModule
+  ],
+  templateUrl: './editar.component.html',
+  styles: ``
+})
+export class EditarComponent {
+  cursoForm!: FormGroup;
+  constructor(private snackBar: MatSnackBar,private dialog: MatDialog, private fb: FormBuilder,public dialogRef: MatDialogRef<EditarComponent>,private _curso: CursoService) { }
+  ngOnInit(): void {
+    this.cursoForm = this.fb.group({
+      curso_nombre: ['', [Validators.required, Validators.maxLength(50)]],
+    });
+  }
+
+  onSubmit() {
+    const modelo: Curso ={
+      id:0,
+      nombre:this.cursoForm.value.curso_nombre,
+      CursoUsuario: []
+    }
+    if (this.cursoForm.valid) {
+      console.log(this.cursoForm.value);
+      this. _curso.agregarCurso(modelo).subscribe({
+        next: (data) => {
+          console.log(data);
+          console.log("Creado");
+          this.dialogRef.close(data); // Cerrar el modal y pasar los datos creados
+        }
+      });
+      this.snackBar.open('Autor creado correctamente', 'Cerrar', {
+        duration: 3000,
+      });
+    }else {
+      const dialogRef = this.dialog.open(AlertDialogComponent, {
+
+        data: { message: 'Formulario no valido' }
+      });
+
+    }
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
+  }
+}
