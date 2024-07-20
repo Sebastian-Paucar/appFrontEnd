@@ -30,7 +30,7 @@ export class CursoService {
   }
 
   actualizarCurso(id: number, curso: Curso): Observable<Curso> {
-    return this.http.patch<Curso>(`${this.apiUrl}/${id}`, curso);
+    return this.http.put<Curso>(`${this.apiUrl}/${id}`, curso);
   }
 
   eliminarCurso(id: number): Observable<Curso> {

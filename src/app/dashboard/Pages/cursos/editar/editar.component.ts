@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {MatDialog, MatDialogRef,MAT_DIALOG_DATA} from "@angular/material/dialog";
 import {CursoService} from "../../../../services/curso.service";
 import {Curso} from "../../../../interfaces/global.interfaces";
 import {AlertDialogComponent} from "../../alert-dialog/alert-dialog.component";
@@ -17,10 +17,10 @@ import {AlertDialogComponent} from "../../alert-dialog/alert-dialog.component";
 })
 export class EditarComponent {
   cursoForm!: FormGroup;
-  constructor(private snackBar: MatSnackBar,private dialog: MatDialog, private fb: FormBuilder,public dialogRef: MatDialogRef<EditarComponent>,private _curso: CursoService) { }
+  constructor(private snackBar: MatSnackBar,private dialog: MatDialog, private fb: FormBuilder,public dialogRef: MatDialogRef<EditarComponent>,@Inject(MAT_DIALOG_DATA) public data: Curso,private _curso: CursoService) { }
   ngOnInit(): void {
     this.cursoForm = this.fb.group({
-      curso_nombre: ['', [Validators.required, Validators.maxLength(50)]],
+      curso_nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50)]],
     });
   }
 
@@ -32,10 +32,10 @@ export class EditarComponent {
     }
     if (this.cursoForm.valid) {
       console.log(this.cursoForm.value);
-      this. _curso.agregarCurso(modelo).subscribe({
+      this. _curso.actualizarCurso(this.data.id,modelo).subscribe({
         next: (data) => {
           console.log(data);
-          console.log("Creado");
+          console.log("Editado");
           this.dialogRef.close(data); // Cerrar el modal y pasar los datos creados
         }
       });

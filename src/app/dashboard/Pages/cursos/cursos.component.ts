@@ -1,18 +1,15 @@
 import {Component, ViewChild} from '@angular/core';
 
 import {Curso} from "../../../interfaces/global.interfaces";
-import {MatTable, MatTableDataSource, MatTableModule} from "@angular/material/table";
+import {MatTableDataSource, MatTableModule} from "@angular/material/table";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {MatFormField} from "@angular/material/form-field";
-import {MatIcon, MatIconModule} from "@angular/material/icon";
+import {MatIconModule} from "@angular/material/icon";
 import {CursoService} from "../../../services/curso.service";
 import {CommonModule, DatePipe} from "@angular/common";
 import {CrearComponent} from "./crear/crear.component";
-import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {AlertDialogComponent} from "../alert-dialog/alert-dialog.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
@@ -103,13 +100,12 @@ export class CursosComponent {
   openEditUserModal(element: Curso): void {
     const dialogRef = this.dialog.open(EditarComponent, {
       width: '400px',
-      data: element // Pasar el autor seleccionado al diálogo para edición
+      data: element
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        // Realizar acciones después de editar el autor, si es necesario
-        // Ejemplo: this.getListAutores();
+        this.getListCursos();
       }
     });
   }
