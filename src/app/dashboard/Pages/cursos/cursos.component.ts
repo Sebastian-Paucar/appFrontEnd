@@ -61,18 +61,19 @@ export class CursosComponent {
   }
 
   getListCursos(): void {
-    this.apiService.getListCursos().subscribe(
-      response => {
+    this.apiService.getListCursos().subscribe({
+      next: response => {
         this.dataSource.data = response;
       },
-      error => {
-        console.error('Error obteniendo la lista de autores:', error);
-        this.snackBar.open('Error obteniendo la lista de autores', 'Cerrar', {
+      error: error => {
+        console.error('Error obteniendo la lista de cursos:', error);
+        this.snackBar.open('Error obteniendo la lista de cursos', 'Cerrar', {
           duration: 3000,
         });
       }
-    );
+    });
   }
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;

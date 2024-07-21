@@ -3,6 +3,10 @@ export interface Curso {
   nombre: string;
   cursoUsuarios:cursoUsuarios[];
 }
+export interface CursoRequest {
+  idcurso:number,
+  usuarios:[]
+}
 export interface Usuario {
   id: number;
   nombre:string;
@@ -11,7 +15,8 @@ export interface Usuario {
 }
 export interface cursoUsuarios {
   "id": number,
-  "usuarioId": number
+  "usuarioId": number,
+  'nombre': string,
 }
 export interface Response<TEntity> {
   Data: TEntity;

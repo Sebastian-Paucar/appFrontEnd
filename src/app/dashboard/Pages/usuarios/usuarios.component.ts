@@ -56,19 +56,20 @@ export class UsuariosComponent {
     this.getListUsuarios();
   }
   private getListUsuarios() {
-    this.apiService.getListUsuarios().subscribe(
-      response => {
+    this.apiService.getListUsuarios().subscribe({
+      next: response => {
         this.dataSource.data = response;
-        console.log(response);
+
       },
-      error => {
-        console.error('Error obteniendo la lista de autores:', error);
-        this.snackBar.open('Error obteniendo la lista de Usuarios', 'Cerrar', {
+      error: error => {
+        console.error('Error obteniendo la lista de usuarios:', error);
+        this.snackBar.open('Error obteniendo la lista de usuarios', 'Cerrar', {
           duration: 3000,
         });
       }
-    );
+    });
   }
+
   openCrear(): void {
     const dialogRef = this.dialog.open(CrearComponent, {
       width: '400px',

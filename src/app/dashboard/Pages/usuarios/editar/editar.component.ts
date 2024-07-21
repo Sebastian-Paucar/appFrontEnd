@@ -62,11 +62,9 @@ export class EditarComponent {
       password:this.cursoForm.value.password,
     }
     if (this.cursoForm.valid) {
-      console.log(this.cursoForm.value);
       this. _usuario.actualizarUsuario(this.data.id,modelo).subscribe({
         next: (data) => {
-          console.log(data);
-          console.log("Creado");
+
           this.dialogRef.close(data); // Cerrar el modal y pasar los datos creados
         }
       });

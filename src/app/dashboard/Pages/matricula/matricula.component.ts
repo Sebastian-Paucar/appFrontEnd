@@ -5,8 +5,7 @@ import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { CursoService } from "../../../services/curso.service";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { CrearComponent } from "../cursos/crear/crear.component";
-import { EditarComponent } from "../cursos/editar/editar.component";
+
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
@@ -17,6 +16,8 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatDividerModule } from "@angular/material/divider";
 import { isEmpty } from "rxjs";
 import { UsuariosService } from "../../../services/usuarios.service";
+import {CrearComponent} from "./crear/crear.component";
+import {EliminarComponent} from "./eliminar/eliminar.component";
 
 @Component({
   selector: 'app-matricula',
@@ -55,6 +56,7 @@ export class MatriculaComponent {
   }
 
   ngOnInit(): void {
+
     this.getListCursos();
     this.getListUsuarios();
   }
@@ -64,8 +66,8 @@ export class MatriculaComponent {
   }
 
   getListCursos(): void {
-    this.apiService.getListCursos().subscribe(
-      response => {
+    this.apiService.getListCursos().subscribe({
+      next: response => {
         this.dataSource.data = response.map(curso => ({
           ...curso,
           cursoUsuarios: curso.cursoUsuarios.map(cursoUsuario => ({
@@ -73,30 +75,34 @@ export class MatriculaComponent {
             nombre: this.usuarios.find(usuario => usuario.id === cursoUsuario.usuarioId)?.nombre || 'Desconocido'
           }))
         }));
+
       },
-      error => {
+
+      error: error => {
         console.error('Error obteniendo la lista de cursos:', error);
         this.snackBar.open('Error obteniendo la lista de cursos', 'Cerrar', {
           duration: 3000,
         });
       }
-    );
+    });
   }
 
+
   private getListUsuarios() {
-    this.apiServiceU.getListUsuarios().subscribe(
-      response => {
+    this.apiServiceU.getListUsuarios().subscribe({
+      next: response => {
         this.usuarios = response;
         this.getListCursos();
       },
-      error => {
+      error: error => {
         console.error('Error obteniendo la lista de usuarios:', error);
         this.snackBar.open('Error obteniendo la lista de usuarios', 'Cerrar', {
           duration: 3000,
         });
       }
-    );
+    });
   }
+
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -107,10 +113,11 @@ export class MatriculaComponent {
     }
   }
 
-  openCrear(): void {
-    const dialogRef = this.dialog.open(CrearComponent, {
+  openEliminar(element: Curso): void {
+    const dialogRef = this.dialog.open(EliminarComponent, {
       width: '400px',
-      data: null // Puedes enviar datos adicionales al diálogo si es necesario
+      data: element
+
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -118,10 +125,11 @@ export class MatriculaComponent {
         this.getListCursos();
       }
     });
+    this.getListCursos();
   }
 
   openEditUserModal(element: Curso): void {
-    const dialogRef = this.dialog.open(EditarComponent, {
+    const dialogRef = this.dialog.open(CrearComponent , {
       width: '400px',
       data: element
     });
