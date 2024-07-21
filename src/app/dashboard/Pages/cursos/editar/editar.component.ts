@@ -28,7 +28,7 @@ export class EditarComponent {
     const modelo: Curso ={
       id:0,
       nombre:this.cursoForm.value.curso_nombre,
-      CursoUsuario: []
+      cursoUsuarios: []
     }
     if (this.cursoForm.valid) {
       console.log(this.cursoForm.value);

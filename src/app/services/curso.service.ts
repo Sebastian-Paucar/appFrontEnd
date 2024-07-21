@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../environment/environment";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Curso,Response } from "../interfaces/global.interfaces";
+import {Curso, Response, Usuario} from "../interfaces/global.interfaces";
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +35,8 @@ export class CursoService {
 
   eliminarCurso(id: number): Observable<Curso> {
     return this.http.delete<Curso>(`${this.apiUrl}/${id}`);
+  }
+  agregarMatricula(usuario: Usuario, idcurso:number): Observable<Curso> {
+    return this.http.put<Curso>(`${this.apiUrl}/asignar-usuario/${idcurso}`, usuario);
   }
 }

@@ -1,28 +1,21 @@
-import {Component, ViewChild} from '@angular/core';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderRow,
-  MatHeaderRowDef,
-  MatRow, MatRowDef, MatTable, MatTableDataSource, MatTableModule
+import {Component} from '@angular/core';
+import {MatTableDataSource, MatTableModule
 } from "@angular/material/table";
-import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
-import {MatIcon, MatIconModule} from "@angular/material/icon";
-import {MatButtonModule, MatIconButton} from "@angular/material/button";
-import {MatInput, MatInputModule} from "@angular/material/input";
+import {MatFormFieldModule, } from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule,} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
 import {MatPaginator, MatPaginatorModule} from "@angular/material/paginator";
 import {Usuario} from "../../../interfaces/global.interfaces";
 import {CommonModule, DatePipe} from "@angular/common";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {UsuariosService} from "../../../services/usuarios.service";
-import {CrearComponent} from "../cursos/crear/crear.component";
-import {EditarComponent} from "../cursos/editar/editar.component";
+import {EditarComponent} from "./editar/editar.component";
 import {MatSortModule} from "@angular/material/sort";
 import {MatSelectModule} from "@angular/material/select";
 import {MatDividerModule} from "@angular/material/divider";
+import {CrearComponent} from "./crear/crear.component";
 
 @Component({
   selector: 'app-usuarios',
@@ -41,7 +34,11 @@ import {MatDividerModule} from "@angular/material/divider";
       MatDialogModule
     ],
   templateUrl: './usuarios.component.html',
-  styles: ``,
+  styles: `.password-hidden {
+    -webkit-text-security: disc; /* Esto muestra puntos en lugar de texto */
+    text-security: disc;
+  }
+  `,
   providers: [DatePipe]
 })
 export class UsuariosComponent {

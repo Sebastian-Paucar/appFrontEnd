@@ -1,7 +1,7 @@
 export interface Curso {
   id:number;
   nombre: string;
-  CursoUsuario:cursoUsuarios[];
+  cursoUsuarios:cursoUsuarios[];
 }
 export interface Usuario {
   id: number;
@@ -10,9 +10,8 @@ export interface Usuario {
   password:string;
 }
 export interface cursoUsuarios {
-  id: number;
-  usuarioId:number;
-  cursoId:number;
+  "id": number,
+  "usuarioId": number
 }
 export interface Response<TEntity> {
   Data: TEntity;
