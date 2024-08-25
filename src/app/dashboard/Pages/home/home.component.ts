@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownService } from '../../../services/markdown.service';
-import { marked } from 'marked';
+
 
 @Component({
   selector: 'app-home',
@@ -54,20 +54,8 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadMarkdown();
+
   }
 
-  loadMarkdown() {
-    this.markdownService.getMarkdown(this.markdownUrl).subscribe({
-      next: (data: string | undefined) => {
-        if (data) { // Verifica si `data` no es undefined
-          const rawHtml = marked(data);
-          this.content = this.sanitizer.bypassSecurityTrustHtml(<string>rawHtml);
-        }
-      },
-      error: (error) => {
-        console.error('Error loading markdown file', error);
-      }
-    });
-  }
+
 }
