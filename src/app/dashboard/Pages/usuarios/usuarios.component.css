@@ -1,0 +1,4 @@
+.password-hidden {
+  -webkit-text-security: disc; /* Esto muestra puntos en lugar de texto */
+  text-security: disc;
+}

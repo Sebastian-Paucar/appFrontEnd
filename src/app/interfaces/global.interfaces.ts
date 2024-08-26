@@ -9,10 +9,27 @@ export interface CursoRequest {
 }
 export interface Usuario {
   id: number;
-  nombre:string;
-  email:string;
-  password:string;
+  nombre: string;
+  email: string;
+  password: string;
+  roles?: Role[];
+  accountNonExpired?: boolean;
+  accountNonLocked?: boolean;
+  credentialsNonExpired?: boolean;
+  enabled?: boolean;
+  username?: string;
+  authorities?: Authority[];
 }
+
+export interface Role {
+  id: number;
+  role: string;
+}
+
+export interface Authority {
+  authority: string;
+}
+
 export interface cursoUsuarios {
   "id": number,
   "usuarioId": number,

@@ -3,7 +3,8 @@ import {Router, RouterModule} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {routes} from "../../app.routes";
-
+import {environment} from "../../environment/environment";
+import { HttpParams } from '@angular/common/http';
 @Component({
   selector: 'app-side-menu',
   standalone: true,
@@ -12,6 +13,18 @@ import {routes} from "../../app.routes";
   styleUrl: './side-menu.component.css'
 })
 export class sidemenuComponent {
+
+  authorize_uri = environment.authorize_uri;
+  params: any = {
+    client_id: environment.client_id,
+    redirect_uri: environment.redirect_uri,
+    scope: environment.scope,
+    response_type: environment.response_type,
+    response_mode: environment.response_mode,
+    code_challenge_method: environment.code_challenge_method,
+    code_challenge: environment.code_challenge,
+}
+
   isSidebarHidden = true;
   showIconsOnly = false;
   token!: string;
@@ -50,5 +63,20 @@ export class sidemenuComponent {
     if (typeof window !== 'undefined') {
       this.onResize({ target: window } as unknown as Event);
     }
+  }
+
+  logout() {
+    // Aquí puedes agregar la lógica de logout, por ejemplo:
+    // Limpiar el localStorage o las cookies
+    localStorage.removeItem('token');
+    // O cualquier otra información relacionada con la sesión
+
+    // Redirigir al usuario a la página de login
+    this.router.navigate(['/login']);
+  }
+  onLogin(): void {
+    const httpParams = new HttpParams({fromObject: this.params});
+    const codeUrl = this.authorize_uri + httpParams.toString();
+    location.href = codeUrl;
   }
 }

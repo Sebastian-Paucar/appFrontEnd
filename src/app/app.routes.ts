@@ -11,7 +11,7 @@ export const routes: Routes = [
     component:DashboardComponent,
   children:[
     {
-      path:'Inicio',
+      path:'authorized',
       title:'Inicio',
       component:HomeComponent
     },
