@@ -10,7 +10,9 @@ export class TokenService {
 
   constructor() { }
   setToken(access_token: string, refresh_token: string): void {
+    localStorage.removeItem(ACCESS_TOKEN);
     localStorage.setItem(ACCESS_TOKEN, access_token);
+    localStorage.removeItem(REFRESH_TOKEN);
     localStorage.setItem(REFRESH_TOKEN, refresh_token);
   }
 }
