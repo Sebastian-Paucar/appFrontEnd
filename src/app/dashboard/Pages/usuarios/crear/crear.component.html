@@ -59,6 +59,23 @@
               La contraseña debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.
             </mat-error>
           </div>
+          <!-- Campo de Roles -->
+          <!-- Campo de Roles -->
+          <div class="col-span-6 sm:col-span-3">
+            <label for="roles" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Roles</label>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Seleccionar Roles</mat-label>
+              <mat-select formControlName="roles" id="roles" multiple>
+                <mat-option *ngFor="let role of rolesList" [value]="role">
+                  {{ role.role }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="cursoForm.get('roles')?.hasError('required')">
+                Al menos un rol es requerido.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
 
         </div>
       </div>

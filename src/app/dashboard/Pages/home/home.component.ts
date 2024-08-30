@@ -1,39 +1,30 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import {ActivatedRoute} from "@angular/router";
-import {AuthService} from "../../../services/auth.service";
-import {TokenService} from "../../../services/token.service";
-
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { TokenService } from '../../../services/token.service';
+import {
+  MatCardTitle,
+  MatCardModule,
+  MatCardFooter,
+  MatCard,
+  MatCardHeader,
+  MatCardContent
+} from '@angular/material/card';
 @Component({
   selector: 'app-home',
   standalone: true,
   templateUrl: './home.component.html',
+  imports: [
+    MatCardFooter,
+    MatCard,
+    MatCardTitle,
+    MatCardHeader,
+    MatCardContent
+  ],
   styles: [``]
 })
-export class HomeComponent implements OnInit {
-  code= '';
+export class HomeComponent  {
 
-  constructor(
-  private activatedRoute: ActivatedRoute,
-  private authService: AuthService,
-  private tokenService: TokenService
-  ) {}
 
-  ngOnInit(): void {
-this.activatedRoute.queryParams.subscribe(data => {
-  this.code = data['code'];
-  this.getToken()
-});
-  }
-getToken():void{
-    this.authService.getToken(this.code).subscribe(
-      data =>{
-        this.tokenService.setToken(data.access_token,data.refresh_token);
-      },
-      error => {
-        console.log(error)}
-    )
-}
 
 }

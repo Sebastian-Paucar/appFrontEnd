@@ -30,10 +30,31 @@ token_url=environment.token_url;
 
     return this.http.post<any>(this.token_url, body, httpOptions).pipe(
       catchError(error => {
-        console.error('Error al obtener el token:', error);
         return throwError(error);
       })
     );
   }
+  public refreshToken(refresh_token: string): Observable<any> {
+    let body = new URLSearchParams();
+    body.set('grant_type', 'refresh_token');
+    body.set('refresh_token', refresh_token);
+    body.set('client_id', environment.client_id);
+
+    const basic_auth = 'Basic ' + btoa('client:123456'); // Asegúrate de que este sea el mismo client_id y secret
+    const headers_object = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept': '*/*',
+      'Authorization': basic_auth,
+    });
+
+    const httpOptions = { headers: headers_object };
+
+    return this.http.post<any>(this.token_url, body, httpOptions).pipe(
+      catchError(error => {
+        return throwError(error);
+      })
+    );
+  }
+
 
 }

@@ -1,41 +1,73 @@
-import {Component, Inject} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {UsuariosService} from "../../../../services/usuarios.service";
-import {Usuario} from "../../../../interfaces/global.interfaces";
-import {AlertDialogComponent} from "../../alert-dialog/alert-dialog.component";
-import {MatError} from "@angular/material/form-field";
-import {NgIf} from "@angular/common";
+import { Component, Inject } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { UsuariosService } from "../../../../services/usuarios.service";
+import { Role, Usuario } from "../../../../interfaces/global.interfaces";
+import { AlertDialogComponent } from "../../alert-dialog/alert-dialog.component";
+import { MatError, MatFormField } from "@angular/material/form-field";
+import { CommonModule } from "@angular/common";
+import { MatSelectModule } from '@angular/material/select';
+import { MatOption, MatSelect } from "@angular/material/select";
 
 @Component({
   selector: 'app-editar',
   standalone: true,
   imports: [
+    ReactiveFormsModule,
     MatError,
-    NgIf,
-    ReactiveFormsModule
+    MatFormField,
+    MatSelect,
+    MatOption,
+    CommonModule,
+    MatSelectModule
   ],
   templateUrl: './editar.component.html',
   styles: ``
 })
 export class EditarComponent {
-
   cursoForm!: FormGroup;
+  rolesList: Role[] = [];
 
-  constructor(private snackBar: MatSnackBar,private dialog: MatDialog, private fb: FormBuilder,public dialogRef: MatDialogRef<EditarComponent>,@Inject(MAT_DIALOG_DATA) public data:Usuario,private _usuario: UsuariosService) { }
+  constructor(
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+    public dialogRef: MatDialogRef<EditarComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Usuario,
+    private _usuario: UsuariosService
+  ) {}
+
   ngOnInit(): void {
     this.cursoForm = this.fb.group({
       nombre: [this.data.nombre, [Validators.required, Validators.maxLength(50)]],
       email: [this.data.email, [Validators.required, Validators.maxLength(50), Validators.email]],
-      password: [this.data.password, [
+      password: ['', [
         Validators.required,
         Validators.maxLength(50),
-        Validators.minLength(8), // Longitud mínima de 8 caracteres
-        this.passwordComplexityValidator() // Validador personalizado
+        Validators.minLength(8),
+        this.passwordComplexityValidator()
       ]],
+      roles: [this.data.roles || [], Validators.required]  // Agregamos el control para los roles
+    });
+
+    this.getRoles();  // Cargar la lista de roles disponibles
+  }
+
+  private getRoles(): void {
+    this._usuario.getListRoles().subscribe({
+      next: (roles) => {
+        this.rolesList = roles;
+      },
+      error: (err) => {
+        console.error('Error obteniendo los roles:', err);
+        this.snackBar.open('Error obteniendo los roles', 'Cerrar', {
+          duration: 3000,
+        });
+      }
     });
   }
+
   passwordComplexityValidator() {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const value = control.value;
@@ -55,34 +87,37 @@ export class EditarComponent {
   }
 
   onSubmit() {
-    const modelo: Usuario ={
-      id:0,
-      email:this.cursoForm.value.email,
-      nombre:this.cursoForm.value.nombre,
-      password:this.cursoForm.value.password,
-    }
-    if (this.cursoForm.valid) {
-      this. _usuario.actualizarUsuario(this.data.id,modelo).subscribe({
-        next: (data) => {
+    const modelo: Usuario = {
+      id: this.data.id,
+      email: this.cursoForm.value.email,
+      nombre: this.cursoForm.value.nombre,
+      password: this.cursoForm.value.password,
+      roles: this.cursoForm.value.roles  // Enviar los roles seleccionados
+    };
 
-          this.dialogRef.close(data); // Cerrar el modal y pasar los datos creados
+    if (this.cursoForm.valid) {
+      this._usuario.actualizarUsuario(this.data.id, modelo).subscribe({
+        next: (data) => {
+          this.dialogRef.close(data); // Cerrar el modal y pasar los datos actualizados
+        },
+        error: (err) => {
+          console.error('Error actualizando usuario:', err);
+          this.snackBar.open('Error actualizando usuario', 'Cerrar', {
+            duration: 3000,
+          });
         }
       });
       this.snackBar.open('Usuario actualizado correctamente', 'Cerrar', {
         duration: 3000,
       });
-    }else {
-      const dialogRef = this.dialog.open(AlertDialogComponent, {
-
+    } else {
+      this.dialog.open(AlertDialogComponent, {
         data: { message: 'Formulario no válido' }
       });
-
-
     }
   }
 
   onClose(): void {
     this.dialogRef.close();
   }
-
 }

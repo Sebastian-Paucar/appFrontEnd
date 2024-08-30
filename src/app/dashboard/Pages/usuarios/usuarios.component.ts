@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   MatTableDataSource,
   MatTableModule
@@ -8,7 +8,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { MatInputModule } from "@angular/material/input";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
-import { Usuario } from "../../../interfaces/global.interfaces";
+import { Usuario, Role } from "../../../interfaces/global.interfaces";
 import { CommonModule, DatePipe } from "@angular/common";
 import { MatDialog, MatDialogModule } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -18,6 +18,7 @@ import { MatSortModule } from "@angular/material/sort";
 import { MatSelectModule } from "@angular/material/select";
 import { MatDividerModule } from "@angular/material/divider";
 import { CrearComponent } from "./crear/crear.component";
+import {join} from "@angular/compiler-cli";
 
 @Component({
   selector: 'app-usuarios',
@@ -39,12 +40,14 @@ import { CrearComponent } from "./crear/crear.component";
   styleUrls: ['./usuarios.component.css'], // Usando el archivo CSS separado
   providers: [DatePipe]
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
   dataSource: MatTableDataSource<Usuario>;
-  displayedColumns: string[] = ['id', 'nombre', 'email', 'password', 'Acciones'];
+  displayedColumns: string[] = ['id', 'nombre', 'email', 'password',  'roles', 'Acciones'];
+   roles:any;
   paginator!: MatPaginator;
 
   constructor(
+
     private apiService: UsuariosService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
@@ -54,6 +57,8 @@ export class UsuariosComponent {
 
   ngOnInit(): void {
     this.getListUsuarios();
+    this.getListRoles();
+
   }
 
   private getListUsuarios() {
@@ -64,10 +69,26 @@ export class UsuariosComponent {
           usuario.password = '•'.repeat(10); // Muestra 10 puntos
         });
         this.dataSource.data = response;
+        //console.log(this.dataSource.data)
       },
       error: error => {
         console.error('Error obteniendo la lista de usuarios:', error);
         this.snackBar.open('Error obteniendo la lista de usuarios', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    });
+  }
+  private getListRoles() {
+    this.apiService.getListRoles().subscribe({
+      next: response => {
+        // Puedes realizar aquí cualquier transformación adicional en los roles si es necesario
+        this.roles = response; // Guarda los roles obtenidos en una variable local o úsala directamente
+       // console.log(this.roles); // Opcional: para depuración, puedes ver los roles en la consola
+      },
+      error: error => {
+        console.error('Error obteniendo la lista de roles:', error);
+        this.snackBar.open('Error obteniendo la lista de roles', 'Cerrar', {
           duration: 3000,
         });
       }
@@ -105,6 +126,7 @@ export class UsuariosComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.getListUsuarios();
+
       }
     });
   }
@@ -125,4 +147,12 @@ export class UsuariosComponent {
       });
     }
   }
+  getRolesString(roles: Role[] | undefined): string {
+    if (!roles || roles.length === 0) {
+      return 'Sin roles';
+    }
+    return roles.map(role => role.role).join(', ');
+  }
+
+
 }

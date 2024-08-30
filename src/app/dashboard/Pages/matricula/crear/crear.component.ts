@@ -82,9 +82,13 @@ export class CrearComponent implements OnInit {
       const requests = modelo.usuarios.map(usuarioId =>
         this._user.getUsuario(usuarioId).pipe(
           switchMap(usuario =>
+
             this._curso.agregarMatricula(usuario, modelo.idcurso)
+
+
           )
         )
+
       );
 
       concat(...requests).subscribe({
