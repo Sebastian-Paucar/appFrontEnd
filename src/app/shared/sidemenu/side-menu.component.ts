@@ -14,16 +14,6 @@ import { HttpParams } from '@angular/common/http';
 })
 export class sidemenuComponent {
 
-  authorize_uri = environment.authorize_uri;
-  params: any = {
-    client_id: environment.client_id,
-    redirect_uri: environment.redirect_uri,
-    scope: environment.scope,
-    response_type: environment.response_type,
-    response_mode: environment.response_mode,
-    code_challenge_method: environment.code_challenge_method,
-    code_challenge: environment.code_challenge,
-}
 
   isSidebarHidden = true;
   showIconsOnly = false;
@@ -59,24 +49,4 @@ export class sidemenuComponent {
     this.showIconsOnly = windowWidth < 768;
   }
 
-  ngOnInit() {
-    if (typeof window !== 'undefined') {
-      this.onResize({ target: window } as unknown as Event);
-    }
-  }
-
-  logout() {
-    // Aquí puedes agregar la lógica de logout, por ejemplo:
-    // Limpiar el localStorage o las cookies
-    localStorage.removeItem('token');
-    // O cualquier otra información relacionada con la sesión
-
-    // Redirigir al usuario a la página de login
-    this.router.navigate(['/login']);
-  }
-  onLogin(): void {
-    const httpParams = new HttpParams({fromObject: this.params});
-    const codeUrl = this.authorize_uri + httpParams.toString();
-    location.href = codeUrl;
-  }
 }

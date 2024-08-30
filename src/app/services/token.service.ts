@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import {environment} from "../environment/environment";
 
 const  ACCESS_TOKEN='access_token';
 const REFRESH_TOKEN='refresh_token';
@@ -15,4 +16,17 @@ export class TokenService {
     localStorage.removeItem(REFRESH_TOKEN);
     localStorage.setItem(REFRESH_TOKEN, refresh_token);
   }
+  clearToken(): void {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+  }
+
+  getAccessToken() {
+    return localStorage.getItem(ACCESS_TOKEN);
+  }
+
+  getRefreshToken(): string {
+    return localStorage.getItem(REFRESH_TOKEN) || '';
+  }
+
 }

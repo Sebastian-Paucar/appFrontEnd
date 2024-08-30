@@ -1,1 +1,38 @@
-<h1>{{code}}</h1>
+<div class="flex justify-center mt-10">
+  <mat-card class="max-w-5xl w-full shadow-lg">
+    <mat-card-header class="bg-blue-600 text-white p-5">
+      <mat-card-title class="text-2xl">Implementación de OAuth2 en Microservicios</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="p-6">
+      <p class="mb-4">
+        OAuth2 es un protocolo de autorización que permite a las aplicaciones obtener acceso limitado a recursos de usuario en un servidor sin necesidad de exponer sus credenciales. Es ampliamente utilizado para garantizar la seguridad en aplicaciones distribuidas y microservicios.
+      </p>
+      <h4 class="text-lg font-semibold mb-3">Arquitectura de Microservicios</h4>
+      <p class="mb-4">
+        En nuestro proyecto, hemos implementado dos microservicios principales:
+      </p>
+      <ul class="list-disc list-inside mb-4">
+        <li><strong>msvc-cursos</strong>: Este microservicio gestiona toda la lógica relacionada con los cursos.</li>
+        <li><strong>msvc-usuarios</strong>: Este microservicio gestiona la información de los usuarios, incluyendo autenticación y autorización.</li>
+      </ul>
+
+      <h4 class="text-lg font-semibold mb-3">Flujo de OAuth2</h4>
+      <ol class="list-decimal list-inside mb-4">
+        <li><strong>Cliente</strong>: El usuario inicia sesión en la aplicación (cliente) y solicita acceso a un recurso protegido.</li>
+        <li><strong>Autorización</strong>: La aplicación redirige al usuario a una página de autorización, donde puede otorgar permisos a la aplicación.</li>
+        <li><strong>Token de Acceso</strong>: Una vez autorizado, el cliente recibe un token de acceso que utiliza para solicitar recursos protegidos de los microservicios.</li>
+        <li><strong>Acceso a Recursos</strong>: El cliente utiliza el token de acceso para interactuar con los microservicios <code>msvc-cursos</code> y <code>msvc-usuarios</code>, permitiendo acceder solo a la información autorizada.</li>
+      </ol>
+
+      <h4 class="text-lg font-semibold mb-3">Diagrama de Flujo</h4>
+      <p>Un diagrama visual podría ilustrar mejor este flujo:</p>
+      <img src="esquema.png">
+      <img src="roles.png"  >
+
+
+    </mat-card-content>
+    <mat-card-footer class="text-center p-4 bg-gray-100">
+      Implementado en Angular y Spring Boot
+    </mat-card-footer>
+  </mat-card>
+</div>

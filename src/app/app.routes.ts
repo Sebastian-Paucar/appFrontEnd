@@ -4,14 +4,18 @@ import {CursosComponent} from "./dashboard/Pages/cursos/cursos.component";
 import {UsuariosComponent} from "./dashboard/Pages/usuarios/usuarios.component";
 import {HomeComponent} from "./dashboard/Pages/home/home.component";
 import {MatriculaComponent} from "./dashboard/Pages/matricula/matricula.component";
+import {LogoutComponent} from "./dashboard/Pages/logout/logout.component";
+import {LoginComponent} from "./dashboard/Pages/login/login.component";
+import {authGuard} from "./services/auth.guard";
 
 export const routes: Routes = [
   {
     path:'menu',
     component:DashboardComponent,
+    canActivate: [authGuard],
   children:[
     {
-      path:'authorized',
+      path:'authorize',
       title:'Inicio',
       component:HomeComponent
     },
@@ -28,8 +32,17 @@ export const routes: Routes = [
       path:'Matriculas',
       title:'Matriculas',
       component:MatriculaComponent
+    },
+    {
+      path:'logout',
+      title:'Logout',
+      component:LogoutComponent
     }
   ]},
-
-  {path:'',redirectTo:'/menu',pathMatch:'full'},
+  {
+    path:'login',
+    component:LoginComponent
+  },
+  { path: '', redirectTo: 'menu', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent }
 ];

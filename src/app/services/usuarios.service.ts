@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {environment} from "../environment/environment";
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { Usuario } from "../interfaces/global.interfaces";
+import { Usuario,Role } from "../interfaces/global.interfaces";
 import { catchError } from "rxjs/operators";
 
 @Injectable({
@@ -21,7 +21,7 @@ export class UsuariosService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    // Puedes personalizar el manejo de errores según tu necesidad
+
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
@@ -37,6 +37,11 @@ export class UsuariosService {
     return this.http.get<Usuario[]>(this.apiUrl, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+  getListRoles(): Observable<Role[]> {
+    return this.http.get<Role[]>(`${this.apiUrl}/roles`, { headers: this.getAuthHeaders() });
+  }
+
+
 
   getUsuario(id: number): Observable<Usuario> {
     return this.http.get<Usuario>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })

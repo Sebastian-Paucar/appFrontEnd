@@ -7,7 +7,7 @@ export const environment  ={
 
   authorize_uri: 'http://localhost:9000/oauth2/authorize?',
   client_id : 'client',
-  redirect_uri: 'http://127.0.0.1:4200/menu/authorized',
+  redirect_uri: 'http://127.0.0.1:4200/login',
   scope: 'openid',
   response_type: 'code',
   response_mode: 'form_post',
@@ -16,5 +16,8 @@ export const environment  ={
   code_verifier: 'z6RNVHB0H3Og94goMunateJutjbKNOvAdlSBPniJFYv',
   token_url:'http://localhost:9000/oauth2/token',
   grant_type:'authorization_code',
-  resource_url:'http://127.0.0.1:4200/cursos',
+  logout_url:'http://localhost:9000/perform_logout',
+  login_url:'http://localhost:4200/login',
+
 }
+
